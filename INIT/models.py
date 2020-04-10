@@ -16,130 +16,125 @@ class User(db.Model, UserMixin):
 
 class Persona(db.Model):
     id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
-    FirstName = db.Column(db.String(50), unique=False, nullable=False)
-    LastName = db.Column(db.String(50), unique=False, nullable=False)
-    Age = db.Column(db.String(50), unique=False, nullable=False)
-    Address = db.Column(db.String(50), unique=False, nullable=False)
-    City = db.Column(db.String(20), unique=False, nullable=False)
-    State = db.Column(db.String(20), unique=False, nullable=False)
-    ZIP = db.Column(db.String(20), unique=False, nullable=False)
-    Country = db.Column(db.String(20), unique=False, nullable=False)
-    PhoneNum = db.Column(db.String(20), unique=False, nullable=False)
-    Email = db.Column(db.String(30), unique=False, nullable=False)
-    # bookings = db.relationship('Bookings', backref='Bookings.Persona', lazy='joined')
+    name = db.Column(db.String(50), unique=False, nullable=False)
+    last_name = db.Column(db.String(50), unique=False, nullable=False)
+    age = db.Column(db.String(50), unique=False, nullable=False)
+    address = db.Column(db.String(50), unique=False, nullable=False)
+    city = db.Column(db.String(20), unique=False, nullable=False)
+    state = db.Column(db.String(20), unique=False, nullable=False)
+    zip = db.Column(db.String(20), unique=False, nullable=False)
+    country = db.Column(db.String(20), unique=False, nullable=False)
+    phone = db.Column(db.String(20), unique=False, nullable=False)
+    email = db.Column(db.String(30), unique=False, nullable=False)
+    bookings = db.relationship('Bookings', backref='persona')
 
 
 class Hotel(db.Model):
     id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
-    Name = db.Column(db.String(50), unique=False, nullable=False)
-    hAddress = db.Column(db.String(50), unique=False, nullable=False)
-    hCity = db.Column(db.String(20), unique=False, nullable=False)
-    hState = db.Column(db.String(20), unique=False, nullable=False)
-    hZIP = db.Column(db.String(20), unique=False, nullable=False)
-    hPhoneNum = db.Column(db.String(20), unique=False, nullable=False)
-    Website = db.Column(db.String(40), unique=False, nullable=False)
-    Room_avail = db.Column(db.Integer, unique=False, nullable=False)
-    # bookings = db.relationship('Bookings', backref='Bookings.Hotel', lazy='joined')
-    # rooms = db.relationship('Rooms', backref='Rooms.Hotel', lazy='joined')
+    name = db.Column(db.String(50), unique=False, nullable=False)
+    address = db.Column(db.String(50), unique=False, nullable=False)
+    city = db.Column(db.String(20), unique=False, nullable=False)
+    state = db.Column(db.String(20), unique=False, nullable=False)
+    zip = db.Column(db.String(20), unique=False, nullable=False)
+    phone = db.Column(db.String(20), unique=False, nullable=False)
+    website = db.Column(db.String(40), unique=False, nullable=False)
+    rooms_avail = db.Column(db.Integer, unique=False, nullable=False)
+    bookings = db.relationship('Bookings', backref='hotel')
+    rooms = db.relationship('Rooms', backref='hotel')
 
 
 class BookingStatus(db.Model):
     id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
-    Status = db.Column(db.String(10), unique=False, nullable=False)
-    Description = db.Column(db.String(150), unique=False, nullable=False)
-    Active = db.Column(db.Boolean, unique=False, nullable=False)
+    status = db.Column(db.String(10), unique=False, nullable=False)
+    description = db.Column(db.String(150), unique=False, nullable=False)
+    active = db.Column(db.Boolean, unique=False, nullable=False)
+    bookings = db.relationship('Bookings', backref='booking_status')
+
 
 class Agents(db.Model):
     id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
-    Code = db.Column(db.String(10), unique=False, nullable=False)
-    # bookings = db.relationship('Bookings', backref='Bookings.Agents', lazy='joined')
+    code = db.Column(db.String(10), unique=False, nullable=False)
+    bookings = db.relationship('Bookings', backref='agents')
+
 
 class Bookings(db.Model):
     id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
-    DateFrom = db.Column(db.Date, unique=False, nullable=False)
-    DateTo = db.Column(db.Date, unique=False, nullable=False)
-    RoomCount = db.Column(db.Integer, unique=False, nullable=False)
-    Adults = db.Column(db.Integer, unique=False, nullable=False)
-    Children = db.Column(db.Integer, unique=False, nullable=False)
-    hotelID = db.Column(db.Integer, ForeignKey(Hotel.id))
-    agentID = db.Column(db.Integer, ForeignKey(Agents.id))
-    personaID = db.Column(db.Integer, ForeignKey(Persona.id))
-    BookingStatusID = db.Column(db.Integer, ForeignKey(BookingStatus.id))
-    H_id = db.relationship('Hotel', foreign_keys=[hotelID])
-    A_id = db.relationship('Agents', foreign_keys=[agentID])
-    P_id = db.relationship('Persona', foreign_keys=[personaID])
-    BS_id = db.relationship('BookingStatus', foreign_keys=[BookingStatusID])
-    # roomsBooked = db.relationship('RoomsBooked', backref='RoomsBooked.Booking', lazy='joined')
+    date_from = db.Column(db.Date, unique=False, nullable=False)
+    date_to = db.Column(db.Date, unique=False, nullable=False)
+    room_count = db.Column(db.Integer, unique=False, nullable=False)
+    adults = db.Column(db.Integer, unique=False, nullable=False)
+    children = db.Column(db.Integer, unique=False, nullable=False)
+    hotel_id = db.Column(db.Integer, ForeignKey(Hotel.id))
+    agent_id = db.Column(db.Integer, ForeignKey(Agents.id))
+    persona_id = db.Column(db.Integer, ForeignKey(Persona.id))
+    booking_status_id = db.Column(db.Integer, ForeignKey(BookingStatus.id))
+    rooms_booked = db.relationship('RoomsBooked', backref='bookings')
+
 
 class RoomType(db.Model):
     id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
-    RType = db.Column(db.String(10), unique=False, nullable=False)
-    RTDescription = db.Column(db.String(120), unique=False, nullable=False)
-    RTActive = db.Column(db.Boolean, unique=False, nullable=False)
-    # rooms = db.relationship('Rooms', backref='Rooms.RoomType', lazy='joined')
+    type = db.Column(db.String(10), unique=False, nullable=False)
+    description = db.Column(db.String(120), unique=False, nullable=False)
+    active = db.Column(db.Boolean, unique=False, nullable=False)
+    rooms = db.relationship('Rooms', backref='Rooms')
+
 
 class Rooms(db.Model):
     id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
-    Floor = db.Column(db.String(2), unique=False, nullable=False)
-    RoomNum = db.Column(db.String(3), unique=False, nullable=False)
-    Description = db.Column(db.String(150), unique=False, nullable=False)
-    hotelID = db.Column(db.Integer, ForeignKey(Hotel.id))
-    roomTypeID = db.Column(db.Integer, ForeignKey(RoomType.id))
-    H_id = db.relationship('Hotel', foreign_keys=[hotelID])
-    # rates = db.relationship('Rates', backref='Rates.Rooms', lazy='joined')
-    # roomsBooked = db.relationship('RoomsBooked', backref='RoomsBooked.Rooms', lazy='joined')
-    # payments = db.relationship('Payments', backref='Payments.Rooms', lazy='joined')
-
-
-class RateType(db.Model):
-    id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
-    RType = db.Column(db.String(10), unique=False, nullable=True)
-    RaTDescription = db.Column(db.String(150), unique=False, nullable=True)
-    RaTActive = db.Column(db.Boolean, unique=False, nullable=False)
-    # rates = db.relationship('Rates', backref='Rate.RateType', lazy='joined')
-
-
-class Rates(db.Model):
-    id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
-    Rate = db.Column(db.Integer, unique=False, primary_key=False)
-    Month = db.Column(db.Integer, unique=False, primary_key=False)
-    RoomsID = db.Column(db.Integer, ForeignKey(Rooms.id))
-    RateTypeID = db.Column(db.Integer, ForeignKey(RateType.id))
-
-
-
-class RoomsBooked(db.Model):
-    id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
-    BookingsID = db.Column(db.Integer, ForeignKey(Bookings.id))
-    RoomID = db.Column(db.Integer, ForeignKey(Rooms.id))
-    RateID = db.Column(db.Integer, ForeignKey(Rates.id))
-    Ro_id = db.relationship('Hotel', foreign_keys=[RoomID])
-    Ra_id = db.relationship('Hotel', foreign_keys=[RateID])
-
-class PaymentStatus(db.Model):
-    id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
-    Status = db.Column(db.Boolean, unique=False, nullable=False)
-    Description = db.Column(db.String(150), unique=False, nullable=False)
-    Active = db.Column(db.Boolean, unique=False, nullable=False)
-    # payments = db.relationship('Payments', backref='Payments.PaymentStatus', lazy='joined')
+    floor = db.Column(db.String(2), unique=False, nullable=False)
+    room_num = db.Column(db.String(3), unique=False, nullable=False)
+    description = db.Column(db.String(150), unique=False, nullable=False)
+    hotel_id = db.Column(db.Integer, ForeignKey(Hotel.id))
+    room_type_id = db.Column(db.Integer, ForeignKey(RoomType.id))
+    rooms_booked = db.relationship('RoomsBooked', backref='rooms')
+    payments = db.relationship('Payments', backref='rooms')
+    rates = db.relationship('Rates', backref='rooms')
 
 
 class PaymentType(db.Model):
     id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
-    PaymentType = db.Column(db.String(10), unique=True, nullable=False)
-    Active = db.Column(db.Boolean, unique=False, nullable=False)
-    # payments = db.relationship('Payments', backref='Payments.PaymentType', lazy='joined')
+    payment_type = db.Column(db.String(10), unique=True, nullable=False)
+    active = db.Column(db.Boolean, unique=False, nullable=False)
+    payments = db.relationship('Payments', backref='payment_type')
+
+
+class PaymentStatus(db.Model):
+    id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
+    status = db.Column(db.Boolean, unique=False, nullable=False)
+    description = db.Column(db.String(150), unique=False, nullable=False)
+    active = db.Column(db.Boolean, unique=False, nullable=False)
+    payments = db.relationship('Payments', backref='payment_status')
 
 
 class Payments(db.Model):
     id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
-    RoomID = db.Column(db.Integer, ForeignKey(Rooms.id))
     Date = db.Column(db.Date, unique=True, nullable=False)
     ServicePaid = db.Column(db.Boolean, nullable=False)
-    PaymentStatusID = db.Column(db.Integer, ForeignKey(PaymentStatus.id))
-    PaymentTypeID = db.Column(db.Integer, ForeignKey(PaymentType.id))
-    PS_id = db.relationship('Hotel', foreign_keys=[PaymentStatusID])
-    PT_id = db.relationship('Hotel', foreign_keys=[PaymentTypeID])
+    pay_status_id = db.Column(db.Integer, ForeignKey(PaymentStatus.id))
+    pay_type_id = db.Column(db.Integer, ForeignKey(PaymentType.id))
+    rooms_id = db.Column(db.Integer, ForeignKey(Rooms.id))
+
+
+class RateType(db.Model):
+    id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
+    rate_type = db.Column(db.String(10), unique=False, nullable=True)
+    description = db.Column(db.String(150), unique=False, nullable=True)
+    active = db.Column(db.Boolean, unique=False, nullable=False)
+    rates = db.relationship('Rates', backref='rate_type')
+
+
+class Rates(db.Model):
+    id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
+    rate = db.Column(db.Integer, unique=False, primary_key=False)
+    month = db.Column(db.Integer, unique=False, primary_key=False)
+    rooms_id = db.Column(db.Integer, ForeignKey(Rooms.id))
+    rate_type_id = db.Column(db.Integer, ForeignKey(RateType.id))
+
+
+class RoomsBooked(db.Model):
+    id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
+    bookings_id = db.Column(db.Integer, ForeignKey(Bookings.id))
+    rooms_id = db.Column(db.Integer, ForeignKey(Rooms.id))
 
 
 def __repr__(self):

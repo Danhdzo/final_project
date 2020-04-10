@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>AlchemyModelDependency</ID>
+  <OriginalElement>#InternProcessSimulator</OriginalElement>
+  <nodes>
+    <node x="80.0" y="112.0">INIT.models.PaymentType</node>
+    <node x="720.234375" y="326.0">INIT.models.RateType</node>
+    <node x="628.25" y="0.0">INIT.models.Agents</node>
+    <node x="0.0" y="525.0">INIT.models.User</node>
+    <node x="732.234375" y="214.0">INIT.models.Rates</node>
+    <node x="272.0" y="326.0">INIT.models.Rooms</node>
+    <node x="212.0" y="214.0">INIT.models.Payments</node>
+    <node x="376.25" y="0.0">INIT.models.BookingStatus</node>
+    <node x="316.0" y="112.0">INIT.models.PaymentStatus</node>
+    <node x="541.234375" y="214.0">INIT.models.Hotel</node>
+    <node x="0.0" y="214.0">INIT.models.RoomType</node>
+    <node x="584.46875" y="112.0">INIT.models.Bookings</node>
+    <node x="824.25" y="0.0">INIT.models.Persona</node>
+    <node x="467.0" y="428.0">INIT.models.RoomsBooked</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="INIT.models.Agents" target="INIT.models.Bookings">
+      <point x="44.0" y="26.0" />
+      <point x="760.25" y="72.0" />
+      <point x="696.46875" y="72.0" />
+      <point x="16.0" y="-26.0" />
+    </edge>
+    <edge source="INIT.models.Persona" target="INIT.models.Bookings">
+      <point x="46.0" y="26.0" />
+      <point x="962.25" y="92.0" />
+      <point x="760.46875" y="92.0" />
+      <point x="80.0" y="-26.0" />
+    </edge>
+    <edge source="INIT.models.PaymentType" target="INIT.models.Payments">
+      <point x="54.0" y="26.0" />
+      <point x="242.0" y="189.0" />
+      <point x="284.0" y="189.0" />
+      <point x="-24.0" y="-26.0" />
+    </edge>
+    <edge source="INIT.models.Hotel" target="INIT.models.Rooms">
+      <point x="42.0" y="26.0" />
+      <point x="667.234375" y="296.0" />
+      <point x="404.0" y="296.0" />
+      <point x="48.0" y="-26.0" />
+    </edge>
+    <edge source="INIT.models.Payments" target="INIT.models.PaymentType">
+      <point x="-72.0" y="-26.0" />
+      <point x="236.0" y="189.0" />
+      <point x="134.0" y="189.0" />
+      <point x="-54.0" y="26.0" />
+    </edge>
+    <edge source="INIT.models.BookingStatus" target="INIT.models.Bookings">
+      <point x="58.0" y="26.0" />
+      <point x="550.25" y="82.0" />
+      <point x="632.46875" y="82.0" />
+      <point x="-48.0" y="-26.0" />
+    </edge>
+    <edge source="INIT.models.RoomsBooked" target="INIT.models.Rooms">
+      <point x="-81.0" y="-26.0" />
+      <point x="494.0" y="408.0" />
+      <point x="314.0" y="408.0" />
+      <point x="-42.0" y="26.0" />
+    </edge>
+    <edge source="INIT.models.Bookings" target="INIT.models.Agents">
+      <point x="-16.0" y="-26.0" />
+      <point x="664.46875" y="92.0" />
+      <point x="672.25" y="92.0" />
+      <point x="-44.0" y="26.0" />
+    </edge>
+    <edge source="INIT.models.Rooms" target="INIT.models.Payments">
+      <point x="-24.0" y="-26.0" />
+      <point x="332.0" y="286.0" />
+      <point x="260.0" y="286.0" />
+      <point x="-48.0" y="26.0" />
+    </edge>
+    <edge source="INIT.models.Hotel" target="INIT.models.Bookings">
+      <point x="-42.0" y="-26.0" />
+      <point x="583.234375" y="189.0" />
+      <point x="616.46875" y="189.0" />
+      <point x="-64.0" y="26.0" />
+    </edge>
+    <edge source="INIT.models.RoomType" target="INIT.models.Rooms">
+      <point x="48.0" y="26.0" />
+      <point x="144.0" y="296.0" />
+      <point x="308.0" y="296.0" />
+      <point x="-48.0" y="-26.0" />
+    </edge>
+    <edge source="INIT.models.PaymentStatus" target="INIT.models.Payments">
+      <point x="58.0" y="26.0" />
+      <point x="490.0" y="189.0" />
+      <point x="380.0" y="189.0" />
+      <point x="72.0" y="-26.0" />
+    </edge>
+    <edge source="INIT.models.Bookings" target="INIT.models.RoomsBooked">
+      <point x="64.0" y="26.0" />
+      <point x="744.46875" y="189.0" />
+      <point x="933.734375" y="189.0" />
+      <point x="933.734375" y="408.0" />
+      <point x="656.0" y="408.0" />
+      <point x="81.0" y="-26.0" />
+    </edge>
+    <edge source="INIT.models.Bookings" target="INIT.models.Hotel">
+      <point x="0.0" y="26.0" />
+      <point x="680.46875" y="189.0" />
+      <point x="667.234375" y="189.0" />
+      <point x="42.0" y="-26.0" />
+    </edge>
+    <edge source="INIT.models.Payments" target="INIT.models.PaymentStatus">
+      <point x="24.0" y="-26.0" />
+      <point x="332.0" y="189.0" />
+      <point x="374.0" y="189.0" />
+      <point x="-58.0" y="26.0" />
+    </edge>
+    <edge source="INIT.models.Rooms" target="INIT.models.Rates">
+      <point x="72.0" y="-26.0" />
+      <point x="428.0" y="306.0" />
+      <point x="760.234375" y="306.0" />
+      <point x="-56.0" y="26.0" />
+    </edge>
+    <edge source="INIT.models.Payments" target="INIT.models.Rooms">
+      <point x="48.0" y="26.0" />
+      <point x="0.0" y="-26.0" />
+    </edge>
+    <edge source="INIT.models.RateType" target="INIT.models.Rates">
+      <point x="0.0" y="-26.0" />
+      <point x="0.0" y="26.0" />
+    </edge>
+    <edge source="INIT.models.Rooms" target="INIT.models.RoomType">
+      <point x="-72.0" y="-26.0" />
+      <point x="284.0" y="306.0" />
+      <point x="48.0" y="306.0" />
+      <point x="-48.0" y="26.0" />
+    </edge>
+    <edge source="INIT.models.Rooms" target="INIT.models.Hotel">
+      <point x="24.0" y="-26.0" />
+      <point x="380.0" y="286.0" />
+      <point x="583.234375" y="286.0" />
+      <point x="-42.0" y="26.0" />
+    </edge>
+    <edge source="INIT.models.Bookings" target="INIT.models.Persona">
+      <point x="48.0" y="-26.0" />
+      <point x="728.46875" y="82.0" />
+      <point x="870.25" y="82.0" />
+      <point x="-46.0" y="26.0" />
+    </edge>
+    <edge source="INIT.models.RoomsBooked" target="INIT.models.Rates">
+      <point x="27.0" y="-26.0" />
+      <point x="602.0" y="398.0" />
+      <point x="922.734375" y="398.0" />
+      <point x="922.734375" y="306.0" />
+      <point x="872.234375" y="306.0" />
+      <point x="56.0" y="26.0" />
+    </edge>
+    <edge source="INIT.models.Rooms" target="INIT.models.RoomsBooked">
+      <point x="42.0" y="26.0" />
+      <point x="398.0" y="398.0" />
+      <point x="548.0" y="398.0" />
+      <point x="-27.0" y="-26.0" />
+    </edge>
+    <edge source="INIT.models.Bookings" target="INIT.models.BookingStatus">
+      <point x="-80.0" y="-26.0" />
+      <point x="600.46875" y="92.0" />
+      <point x="434.25" y="92.0" />
+      <point x="-58.0" y="26.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.9585121602288984" x="369.144776119403" y="339.5" />
+  <SelectedNodes />
+  <Categories />
+</Diagram>
+

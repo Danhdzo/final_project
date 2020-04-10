@@ -1,41 +1,42 @@
 from INIT import db
-from INIT.models import Hotel, Rooms, RoomType, BookingStatus, Agents, RateType, Rates, PaymentStatus, PaymentType
+from INIT.models import Hotel, Rooms, RoomType, BookingStatus, Agents, RateType, Rates, PaymentStatus, PaymentType, \
+    Bookings
 
 # hotel
 Name = ['Anaheim', 'Tokyo']
-hAddress = ['1150 West, Magic Way', '29-1 Maihama, Urayasu, Chiba 279-0031']
-hCity = ['Anaheim city 123', 'Tokyo city 123']
-hState = ['California', 'Kanto']
-hZIP = ['54321', '98765']
-hPhoneNum = ['1714-778-6600', '8147-305-3333']
+Address = ['1150 West, Magic Way', '29-1 Maihama, Urayasu, Chiba 279-0031']
+City = ['Anaheim city 123', 'Tokyo city 123']
+State = ['California', 'Kanto']
+Zip = ['54321', '98765']
+Phone = ['1714-778-6600', '8147-305-3333']
 Website = ['https://disneyland.disney.go.com/es-us/hotels/disneyland-hotel/',
            'https://www.tokyodisneyresort.jp/en/info/']
 
-for nam, hadrss, hct, hstat, hz, hphon, site in zip(Name, hAddress, hCity, hState, hZIP, hPhoneNum, Website):
-    db.session.add(Hotel(Name=nam, hAddress=hadrss, hCity=hct, hState=hstat, hZIP=hz, hPhoneNum=hphon, Website=site,
-                         Room_avail=210))
+for nam, hadrss, hct, hstat, hz, hphon, site in zip(Name, Address, City, State, Zip, Phone, Website):
+    db.session.add(Hotel(name=nam, address=hadrss, city=hct, state=hstat, zip=hz, phone=hphon, website=site,
+                         rooms_avail=210))
     db.session.commit()
 
 # Booking Status
 Status = ['Occupied', 'Free', 'Cleaning', 'Repairing', 'Closed']
 Description = ['Guests on the room', 'Free of guests', 'Maid in the room', 'Plumber or else', 'Ghost or other']
 for bstat, bdesc in zip(Status, Description):
-    db.session.add(BookingStatus(Status=bstat, Description=bdesc, Active=0))
+    db.session.add(BookingStatus(status=bstat, description=bdesc, active=0))
     db.session.commit()
 
 # Agents
 Code = ['MILITAR', 'UTE', 'AMIGUIS']
 for cody in Code:
-    db.session.add(Agents(Code=cody))
+    db.session.add(Agents(code=cody))
     db.session.commit()
 
 # Bookings
 
 # RoomType
-RType = ['single', 'double,', 'junior', 'master']
+RType = ['single', 'double', 'junior', 'master']
 RTDescription = ['single bed', 'couple of beds', 'single and queen size bed', '2 queen size beds']
 for rtaip, rtdesc in zip(RType, RTDescription):
-    db.session.add(RoomType(RType=rtaip, RTDescription=rtdesc, RTActive=0))
+    db.session.add(RoomType(type=rtaip, description=rtdesc, active=0))
     db.session.commit()
 
 # Rooms
@@ -45,18 +46,18 @@ hotel = []
 for f in range(1, 8):
     for r in range(1, 31):
         # Description
-        db.session.add(Rooms(Floor=str(f), RoomNum=str(r), Description='Room Ready', hotelID=1))
-        db.session.add(Rooms(Floor=str(f), RoomNum=str(r), Description='Room Ready', hotelID=2))
+        db.session.add(Rooms(floor=str(f), room_num=str(r), description='Room Ready', hotel_id=1))
+        db.session.add(Rooms(floor=str(f), room_num=str(r), description='Room Ready', hotel_id=2))
         db.session.commit()
 
 # RoomsBooked
 
 # RateType
 RType = ['Regular', 'High Season', 'Low Season']
-RaTDescription = ['Ragular Rate', 'Higher Rate due to low vacancy',
+RaTDescription = ['Regular Rate', 'Higher Rate due to low vacancy',
                   'Lower rate due to high vacancy']
 for rtaip, ratdesc in zip(RType, RaTDescription):
-    db.session.add(RateType(RType=rtaip, RaTDescription=ratdesc, RaTActive=0))
+    db.session.add(RateType(rate_type=rtaip, description=ratdesc, active=0))
     db.session.commit()
 
 # Rates
@@ -67,16 +68,16 @@ for month in range(1, 13):
         rate = 1000
     else:
         rate = 1200
-    db.session.add(Rates(Rate=rate, Month=month))
+    db.session.add(Rates(rate=rate, month=month))
 
 # Payment Type
 PaymentTypes = ['Debit', 'Credit', 'Paypal', 'Cash']
 for payment in PaymentTypes:
-    PaymentT_data = PaymentType(PaymentType=payment, Active=0)
+    PaymentT_data = PaymentType(payment_type=payment, active=0)
 
 # Payment Status
 PaymentStat = ['Completed', 'Cancelled', 'In Progress']
 Description = ['Transaction Successful', 'Transaction Aborted', 'Making Transaction']
-for paystat, desc in zip(PaymentStat, Description): PaymentStatus(Status=paystat, Description=desc, Active=0)
+for paystat, desc in zip(PaymentStat, Description): PaymentStatus(status=paystat, description=desc, active=0)
 
 # Payments

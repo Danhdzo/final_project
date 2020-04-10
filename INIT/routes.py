@@ -1,8 +1,8 @@
 from flask import flash, render_template, redirect, url_for, request
 from flask_login import login_user, login_required, logout_user, current_user
-from INIT.forms import LoginForm, Persona_form, Hotel_form, Booking_form
+from INIT.forms import LoginForm, Persona_form, Booking_form
 from INIT.__init__ import app, db, bcrypt
-from INIT.models import User, Persona, Hotel, Bookings, Rooms, RoomType, Agents
+from INIT.models import User, Persona, Hotel, Bookings, Rooms, RoomType, Agents, RoomsBooked
 
 
 @app.route("/")
@@ -15,33 +15,33 @@ def home():
 def booking():
     # Get hotel data from DB
     #
-    Hotelform = Hotel_form()
-    Hotelform.Name.hotels = [(hotel.Name) for hotel in Hotel.query.all()]
-    # # Get if rooms available
-    # Bookingform = Booking_form()
-    #
-    # if Booking_form.validate_on_submit():
-    #     booking = Bookings(DateFrom=Booking_form.DateFrom.data, DateTo=Booking_form.DateTo.data,
-    #                        Adults=Booking_form.Adults.data,
-    #                        Children=Booking_form.Children.data, RoomType=Booking_form.RoomType.data,
-    #                        AgentID=Booking_form.Agent.data,
-    #                        RoomCount=Booking_form.RoomCount.data)
-    # vacancy = db.query(Rooms, Bookings, Hotel, RoomType) \
-    #     .join(Bookings) \
-    #     .join(Hotel) \
-    #     .filter_by(Booking_form.RoomType.data) \
-    #     .filter_by(hotel) \
-    #     .filter_by(Rooms.Room_avail).first()
-    #
-    # if Booking_form.RoomCount <= vacancy:
-    #     vacancy -= Booking_form.RoomCount
-    #     next_page = request.args.get('next')
-    #     return redirect(next_page) if next_page else redirect(url_for('confirmation'))
-    #
-    # else:
-    #     flash('Rooms not available, please choose another type of room or select a different hotel', 'danger')
+    form = Booking_form()
+    if form.validate_on_submit():
+        booking = Bookings(date_from=form.date_from.data, date_to=form.date_to.data, adults=form.adults.data,
+                           children=form.children.data, room_count=form.room_count.data)
+        type = RoomType(type=form.room_type)
+        agent = Agents(code=form.agent)
+        for row in Rooms.query.with_entities(Rooms.id):
+            for rooms_booked in RoomsBooked.query.with_entities(RoomsBooked.rooms_id):
+                if row != rooms_booked:
+                    c = +1
+                    x = c - form.room_count.data
+                    if x >= 0:
+                        next_page = request.args.get('next')
 
-    return render_template('booking.html', title='Booking', form=Hotel_form)
+                        return redirect(next_page) if next_page else redirect(url_for('confirmation'))
+
+        # days_range = form.date_from.data - form.date_to.data
+        # for date in range(days_range + 1):
+        #     for item in RoomsBooked.query.with_entities(RoomsBooked.bookings_id):
+        #
+        #     for item in
+        #         if date ==
+
+                    else:
+                        flash('Rooms not available, please choose a different hotel or different dates', 'danger')
+
+    return render_template('booking.html', title='Booking', form=form)
 
 
 @app.route("/persona", methods=['GET', 'POST'])
@@ -49,14 +49,13 @@ def booking():
 def persona():
     form = Persona_form()
     if form.validate_on_submit():
-        client = Persona(FirstName=form.FirstName.data, LastName=form.LastName.data, Age=form.Age.data,
-                         Address=form.Address.data,
-                         City=form.City.data, State=form.State.data, ZIP=form.ZIP.data, Country=form.Country.data,
-                         PhoneNum=form.PhoneNum.data,
-                         Email=form.Email.data)
+        client = Persona(name=form.name.data, last_name=form.last_name.data, age=form.age.data,
+                         address=form.address.data,
+                         city=form.city.data, state=form.state.data, zip=form.zip.data, country=form.country.data,
+                         phone=form.phone.data,
+                         email=form.email.data)
 
-        check_client = Persona.query.filter_by(Email=form.Email.data).first()
-        print(check_client)
+        check_client = Persona.query.filter_by(email=form.email.data).first()
         if check_client is None:
             db.session.add(client)
             db.session.commit()

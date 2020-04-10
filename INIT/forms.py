@@ -2,6 +2,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, DateField
 from wtforms.validators import DataRequired, Email
 
+from INIT.models import Hotel, RoomType, Bookings
+
 
 class LoginForm(FlaskForm):
     email = StringField('Email',
@@ -13,63 +15,70 @@ class LoginForm(FlaskForm):
 
 
 class Persona_form(FlaskForm):
-    FirstName = StringField('FirstName',
-                            validators=[DataRequired()])
-    LastName = StringField('LastName',
-                           validators=[DataRequired()])
-    Age = StringField('Age',
-                      validators=[DataRequired()])
-    Address = StringField('Address',
-                          validators=[DataRequired()])
-    City = StringField('City',
+    name = StringField('First Name',
                        validators=[DataRequired()])
-    State = StringField('State',
-                        validators=[DataRequired()])
-    ZIP = StringField('ZIP',
+    last_name = StringField('last_name',
+                            validators=[DataRequired()])
+    age = StringField('Age',
                       validators=[DataRequired()])
-    Country = StringField('Country',
+    address = StringField('Address',
                           validators=[DataRequired()])
-    PhoneNum = StringField('PhoneNum',
-                           validators=[DataRequired()])
-    Email = StringField('Email',
+    city = StringField('City',
+                       validators=[DataRequired()])
+    state = StringField('State',
+                        validators=[DataRequired()])
+    zip = StringField('ZIP',
+                      validators=[DataRequired()])
+    country = StringField('Country',
+                          validators=[DataRequired()])
+    phone = StringField('Phone',
+                        validators=[DataRequired()])
+    email = StringField('Email',
                         validators=[DataRequired(), Email()])
-    Submit = SubmitField('Create Client')
-
-
-class Hotel_form(FlaskForm):
-    Name = SelectField(u'Hotel Name', hotels=['Anaheim', 'Tokyo'])
-    # if Name == "Anaheim":
-    #     hAddress = "1150 West, Magic Way"
-    #     hCity = "Anaheim"
-    #     hState = "California"
-    #     hZIP = "54321"
-    #     hPhoneNum = "17147786600"
-    #     Website = "https://disneyland.disney.go.com/es-us/hotels/disneyland-hotel/"
-    #
-    # elif Name == "Tokyo":
-    #     hAddress = "29-1 Maihama, Urayasu, Chiba 279-0031"
-    #     hCity = "Tokyo"
-    #     hState = "Kanto"
-    #     hZIP = "98765"
-    #     hPhoneNum = "81473053333"
-    #     Website = "https://www.tokyodisneyresort.jp/en/info/"
-
-    Submit = SubmitField('Submit')
+    submit = SubmitField('Create Guest')
 
 
 class Booking_form(FlaskForm):
-    DateFrom = DateField(u'DateFrom', validators=[DataRequired()], format='%d-%m-%Y')
-    DateTo = DateField(u'DateTo', validators=[DataRequired()], format='%d-%m-%Y')
-    Adults = StringField(u'Adults', validators=[DataRequired()])
-    Children = StringField(u'Children', validators=[DataRequired()])
-    RoomType = SelectField(u'RoomType', RoomType=['single', 'double', 'triple', 'suit', 'master'])
-    Agent = StringField('Code', validators=[DataRequired()])
-    RoomCount= SelectField(u'Amount of rooms to reserve', RoomCount=['1','2','3','4','5','6','7','8','9','10'])
-    Submit = SubmitField('Submit')
+    # hotel dropdown
+    hotel_list = []
+    for h in Hotel.query.all():
+        hotel_list.append((h.id, h.name))
+    name = SelectField('Hotel Name', choices=hotel_list)
+    # date_from field
+    date_from = DateField('Date From (dd-mm-yyyy)', validators=[DataRequired()], format='%d-%m-%Y')
+    # date_to field
+    date_to = DateField('Date To (dd-mm-yyyy)', validators=[DataRequired()], format='%d-%m-%Y')
+    # adults dropdown
+    adult_list = []
+    for i in range(1, 11):
+        adult_list.append((i, i))
+    adults = SelectField('Adults', choices=adult_list)
+    # children dropdown
+    child_list = []
+    for i in range(0, 11):
+        child_list.append((i, i))
+    children = SelectField('Children', choices=child_list)
+    # room type dropdown
+    type_list = []
+    for rt in RoomType.query.all():
+        type_list.append((rt.id, rt.type))
+    room_type = SelectField('RoomType', choices=type_list)
+    # agent field
+    agent = StringField('Code')
+    # room count dropdown
+    count_list = []
+    for i in range(1, 11):
+        count_list.append((i, i))
+    room_count = SelectField('Amount of rooms to reserve',
+                             choices=count_list)
+    # submit
+    submit = SubmitField('Submit')
+
 
 class Payments(FlaskForm):
-    ServicePaid=BooleanField('Paid')
-    paymentType=SelectField(u'Payment Type', PaymentType=['Debit', 'Credit'])
+    paid = BooleanField('Paid')
+    payment_type = SelectField('Payment Type', PaymentType=['Debit', 'Credit', 'PayPal', 'Cash'])
+
 
 class Confirmation_form(FlaskForm):
     Submit = SubmitField('Submit')
