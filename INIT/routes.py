@@ -1,47 +1,14 @@
 from flask import flash, render_template, redirect, url_for, request
 from flask_login import login_user, login_required, logout_user, current_user
-from INIT.forms import LoginForm, Persona_form, Booking_form
+from INIT.forms import LoginForm, Persona_form, Booking_form, Payments_form
 from INIT.__init__ import app, db, bcrypt
-from INIT.models import User, Persona, Hotel, Bookings, Rooms, RoomType, Agents, RoomsBooked
+from INIT.models import User, Persona, Hotel, Bookings, Rooms, RoomType, Agents, RoomsBooked, PaymentType
 
 
 @app.route("/")
 @app.route("/home")
 def home():
     return render_template('home.html')
-
-
-@app.route("/booking")
-def booking():
-    # Get hotel data from DB
-    #
-    form = Booking_form()
-    if form.validate_on_submit():
-        booking = Bookings(date_from=form.date_from.data, date_to=form.date_to.data, adults=form.adults.data,
-                           children=form.children.data, room_count=form.room_count.data)
-        type = RoomType(type=form.room_type)
-        agent = Agents(code=form.agent)
-        for row in Rooms.query.with_entities(Rooms.id):
-            for rooms_booked in RoomsBooked.query.with_entities(RoomsBooked.rooms_id):
-                if row != rooms_booked:
-                    c = +1
-                    x = c - form.room_count.data
-                    if x >= 0:
-                        next_page = request.args.get('next')
-
-                        return redirect(next_page) if next_page else redirect(url_for('confirmation'))
-
-        # days_range = form.date_from.data - form.date_to.data
-        # for date in range(days_range + 1):
-        #     for item in RoomsBooked.query.with_entities(RoomsBooked.bookings_id):
-        #
-        #     for item in
-        #         if date ==
-
-                    else:
-                        flash('Rooms not available, please choose a different hotel or different dates', 'danger')
-
-    return render_template('booking.html', title='Booking', form=form)
 
 
 @app.route("/persona", methods=['GET', 'POST'])
@@ -59,16 +26,47 @@ def persona():
         if check_client is None:
             db.session.add(client)
             db.session.commit()
-
             next_page = request.args.get('next')
-
             return redirect(next_page) if next_page else redirect(url_for('booking'))
         else:
             flash('Client data already exist, please enter different data', 'danger')
     return render_template('persona.html', title='Client', form=form)
 
 
-# return redirect(url_for('login'))
+@app.route("/booking", methods=['GET', 'POST'])
+def booking():
+    form = Booking_form()
+    if form.validate_on_submit():
+        booking = Bookings(date_from=form.date_from.data, date_to=form.date_to.data, adults=form.adults.data,
+                           children=form.children.data, room_count=form.room_count.data)
+        type = RoomType(type=form.room_type)
+        agent = Agents(code=form.agent)
+        for row in Rooms.query.with_entities(Rooms.id):
+            for rooms_booked in RoomsBooked.query.with_entities(RoomsBooked.rooms_id):
+                if row != rooms_booked:
+                    c = +1
+                    x = c - form.room_count.data
+                    if x >= 0:
+                        next_page = request.args.get('next')
+                        return redirect(next_page) if next_page else redirect(url_for('confirmation'))
+                    else:
+                        flash('Rooms not available, please choose a different hotel or different dates', 'danger')
+    return render_template('booking.html', title='Booking', form=form)
+
+
+@app.route("/confirmation", methods=['GET', 'POST'])
+def confirmation():
+    form = Payments_form()
+    if form.validate_on_submit():
+        form = PaymentType(payment_type=form.payment_type.data,
+                           card_num=bcrypt.generate_password_hash(form.card_number.data),
+                           card_cvv=bcrypt.generate_password_hash(form.sec_num.data))
+        if form is True:
+            return redirect(url_for('persona'))
+        else:
+               flash('Rooms not available, please choose a different hotel or different dates', 'danger')
+    return render_template('confirmation.html', title='Confirmation', form=form)
+
 
 @app.route("/about")
 def about():

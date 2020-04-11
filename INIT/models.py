@@ -95,6 +95,8 @@ class PaymentType(db.Model):
     id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
     payment_type = db.Column(db.String(10), unique=True, nullable=False)
     active = db.Column(db.Boolean, unique=False, nullable=False)
+    card_num = db.Column(db.String(12), unique=True, nullable=False)
+    card_cvv = db.Column(db.String(3), unique=False, nullable=False)
     payments = db.relationship('Payments', backref='payment_type')
 
 
@@ -109,7 +111,6 @@ class PaymentStatus(db.Model):
 class Payments(db.Model):
     id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
     Date = db.Column(db.Date, unique=True, nullable=False)
-    ServicePaid = db.Column(db.Boolean, nullable=False)
     pay_status_id = db.Column(db.Integer, ForeignKey(PaymentStatus.id))
     pay_type_id = db.Column(db.Integer, ForeignKey(PaymentType.id))
     rooms_id = db.Column(db.Integer, ForeignKey(Rooms.id))

@@ -71,7 +71,7 @@ for month in range(1, 13):
     db.session.add(Rates(rate=rate, month=month))
 
 # Payment Type
-PaymentTypes = ['Debit', 'Credit', 'Paypal', 'Cash']
+PaymentTypes = ['Debit', 'Credit']
 for payment in PaymentTypes:
     PaymentT_data = PaymentType(payment_type=payment, active=0)
 

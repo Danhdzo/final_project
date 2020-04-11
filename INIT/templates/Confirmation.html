@@ -1,10 +1,93 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "layout.html" %}
+{% block content %}
+    <legend class="account-form">
+        <h1>Confirmation</h1></legend>
+    <!--- name Form  -->
+    <div class="form-container">
+        <form method="POST" action="">
+            <div class="form-group" id="name_form">
+                <fieldset>
+                    {{}}
+                </fieldset>
+            </div>
+            <!--- date from Form  -->
+            <div class="form-group" id="date_from_form">
+                {{ form.date_from.label(class="form-control-label") }}
+                {{ form.date_from }}
 
-</body>
-</html>
+            </div>
+            <!--- date to Form  -->
+            <div class="form-group" id="date_to_form">
+                {{ form.date_to.label(class="form-control-label") }}
+                {{ form.date_to }}
+
+            </div>
+            <!--- adult Form  -->
+
+            <div class="form-group" id="last_name_form">
+                {{ form.adults.label(class="form-control-label") }}
+                {% if form.adults.errors %}
+                    {{ form.adults(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.adults.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.adults(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <!--- children Form  -->
+
+            <div class="form-group" id="last_name_form">
+                {{ form.children.label(class="form-control-label") }}
+                {% if form.children.errors %}
+                    {{ form.children(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.children.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.children(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+        <!--- room_type Form  -->
+
+            <div class="form-group" id="name_form">
+                <fieldset>
+                    {{ form.room_type.label(class="form-control-label") }}
+                    {{ form.room_type }}
+                </fieldset>
+            </div>
+        <!--- children Form  -->
+
+            <div class="form-group" id="last_name_form">
+                {{ form.agent.label(class="form-control-label") }}
+                {% if form.agent.errors %}
+                    {{ form.agent(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.agent.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.agent(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+        <!--- room_count Form  -->
+
+            <div class="form-group" id="name_form">
+                <fieldset>
+                    {{ form.room_count.label(class="form-control-label") }}
+                    {{ form.room_count }}
+                </fieldset>
+            </div>
+            <!-- Submit Button -->
+
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+{% endblock content %}
