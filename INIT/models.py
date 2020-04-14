@@ -59,8 +59,12 @@ class Agents(db.Model):
 
 class Bookings(db.Model):
     id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
-    date_from = db.Column(db.Date, unique=False, nullable=False)
-    date_to = db.Column(db.Date, unique=False, nullable=False)
+    date_from_day = db.Column(db.Integer, unique=False, nullable=False)
+    date_from_month = db.Column(db.Integer, unique=False, nullable=False)
+    date_from_year = db.Column(db.Integer, unique=False, nullable=False)
+    date_to_day = db.Column(db.Integer, unique=False, nullable=False)
+    date_to_month = db.Column(db.Integer, unique=False, nullable=False)
+    date_to_year = db.Column(db.Integer, unique=False, nullable=False)
     room_count = db.Column(db.Integer, unique=False, nullable=False)
     adults = db.Column(db.Integer, unique=False, nullable=False)
     children = db.Column(db.Integer, unique=False, nullable=False)

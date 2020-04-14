@@ -4,88 +4,185 @@
         <h1>Booking</h1></legend>
     <!--- name Form  -->
     <div class="form-container">
-        <form method="POST" action="">
-            <div class="form-group" id="name_form">
-                <fieldset>
-                    {{ form.name.label(class="form-control-label") }}
-                    {{ form.name }}
-                </fieldset>
-            </div>
-            <!--- date from Form  -->
-            <div class="form-group" id="date_from_form">
-                {{ form.date_from.label(class="form-control-label") }}
-                {{ form.date_from }}
+        <form method="POST" method="get" action="">.
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <!--- name form --->
+                <div class="form-group" id="name">
 
-            </div>
-            <!--- date to Form  -->
-            <div class="form-group" id="date_to_form">
-                {{ form.date_to.label(class="form-control-label") }}
-                {{ form.date_to }}
+                    {{ form.name.label(class="form-control-label" ) }}
+                    {% if form.name.errors %}
+                        {{ form.name(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.name.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.name(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <h3>Date from:</h3>
+                <!--- date_from_day form --->
+                <div class="form-group" id="name">
+                    {{ form.date_from_day.label(class="form-control-label" ) }}
+                    {% if form.date_from_day.errors %}
+                        {{ form.date_from_day(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.date_from_day.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.date_from_day(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <!--- date_from_month form --->
+                <div class="form-group" id="name">
+                    {{ form.date_from_month.label(class="form-control-label" ) }}
+                    {% if form.date_from_month.errors %}
+                        {{ form.date_from_month(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.date_from_month.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.date_from_month(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <!--- date_from_year form --->
+                <div class="form-group" id="name">
+                    {{ form.date_from_year.label(class="form-control-label" ) }}
+                    {% if form.date_from_year.errors %}
+                        {{ form.date_from_year(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.date_from_year.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.date_from_year(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
 
-            </div>
-            <!--- adult Form  -->
+                <!--- date_to_day form --->
+                <h3>Date to:</h3>
+                <div class="form-group" id="name">
+                    {{ form.date_to_day.label(class="form-control-label" ) }}
+                    {% if form.date_to_day.errors %}
+                        {{ form.date_to_day(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.date_to_day.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.date_to_day(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <!--- date_to_month form --->
+                <div class="form-group" id="name">
+                    {{ form.date_to_month.label(class="form-control-label" ) }}
+                    {% if form.date_to_month.errors %}
+                        {{ form.date_to_month(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.date_to_month.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.date_to_month(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <!--- date_to_year form --->
+                <div class="form-group" id="name">
+                    {{ form.date_to_year.label(class="form-control-label" ) }}
+                    {% if form.date_to_year.errors %}
+                        {{ form.date_to_year(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.date_to_year.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.date_to_year(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
 
-            <div class="form-group" id="last_name_form">
-                {{ form.adults.label(class="form-control-label") }}
-                {% if form.adults.errors %}
-                    {{ form.adults(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.adults.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ form.adults(class="form-control form-control-lg") }}
-                {% endif %}
-            </div>
-            <!--- children Form  -->
+                <!--- adults form --->
+                <div class="form-group" id="name">
+                    {{ form.adults.label(class="form-control-label" ) }}
+                    {% if form.adults.errors %}
+                        {{ form.adults(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.adults.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.adults(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <!--- children form --->
+                <div class="form-group" id="name">
+                    {{ form.children.label(class="form-control-label" ) }}
+                    {% if form.children.errors %}
+                        {{ form.children(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.children.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.children(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <!--- room_count form --->
+                <div class="form-group" id="name">
+                    {{ form.room_count.label(class="form-control-label" ) }}
+                    {% if form.room_count.errors %}
+                        {{ form.room_count(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.room_count.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.room_count(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <!--- agent form --->
+                <div class="form-group" id="name">
+                    {{ form.agent.label(class="form-control-label" ) }}
+                    {% if form.agent.errors %}
+                        {{ form.agent(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.room_count.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.agent(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <!--- room_type form --->
+                <div class="form-group" id="name">
+                    {{ form.room_type.label(class="form-control-label" ) }}
+                    {% if form.room_type.errors %}
+                        {{ form.room_type(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.room_type.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.room_type(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
 
-            <div class="form-group" id="last_name_form">
-                {{ form.children.label(class="form-control-label") }}
-                {% if form.children.errors %}
-                    {{ form.children(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.children.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ form.children(class="form-control form-control-lg") }}
-                {% endif %}
-            </div>
-        <!--- room_type Form  -->
-
-            <div class="form-group" id="name_form">
-                <fieldset>
-                    {{ form.room_type.label(class="form-control-label") }}
-                    {{ form.room_type }}
-                </fieldset>
-            </div>
-        <!--- children Form  -->
-
-            <div class="form-group" id="last_name_form">
-                {{ form.agent.label(class="form-control-label") }}
-                {% if form.agent.errors %}
-                    {{ form.agent(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.agent.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ form.agent(class="form-control form-control-lg") }}
-                {% endif %}
-            </div>
-        <!--- room_count Form  -->
-
-            <div class="form-group" id="name_form">
-                <fieldset>
-                    {{ form.room_count.label(class="form-control-label") }}
-                    {{ form.room_count }}
-                </fieldset>
-            </div>
             <!-- Submit Button -->
-
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info") }}
             </div>

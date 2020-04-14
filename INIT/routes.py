@@ -1,8 +1,13 @@
+import calendar
+from datetime import date
+
 from flask import flash, render_template, redirect, url_for, request
 from flask_login import login_user, login_required, logout_user, current_user
 from INIT.forms import LoginForm, Persona_form, Booking_form, Payments_form
 from INIT.__init__ import app, db, bcrypt
 from INIT.models import User, Persona, Hotel, Bookings, Rooms, RoomType, Agents, RoomsBooked, PaymentType
+
+global booking_data
 
 
 @app.route("/")
@@ -26,7 +31,7 @@ def persona():
         if check_client is None:
             db.session.add(client)
             db.session.commit()
-            next_page = request.args.get('next')
+            next_page = request.args.get('submit')
             return redirect(next_page) if next_page else redirect(url_for('booking'))
         else:
             flash('Client data already exist, please enter different data', 'danger')
@@ -36,21 +41,42 @@ def persona():
 @app.route("/booking", methods=['GET', 'POST'])
 def booking():
     form = Booking_form()
+    c = 0
     if form.validate_on_submit():
-        booking = Bookings(date_from=form.date_from.data, date_to=form.date_to.data, adults=form.adults.data,
-                           children=form.children.data, room_count=form.room_count.data)
-        type = RoomType(type=form.room_type)
-        agent = Agents(code=form.agent)
-        for row in Rooms.query.with_entities(Rooms.id):
-            for rooms_booked in RoomsBooked.query.with_entities(RoomsBooked.rooms_id):
-                if row != rooms_booked:
-                    c = +1
-                    x = c - form.room_count.data
-                    if x >= 0:
-                        next_page = request.args.get('next')
-                        return redirect(next_page) if next_page else redirect(url_for('confirmation'))
-                    else:
-                        flash('Rooms not available, please choose a different hotel or different dates', 'danger')
+        booking = Bookings(date_from_day=form.date_from_day.data,
+                           date_from_month=form.date_from_month.data, date_from_year=form.date_from_year.data,
+                           date_to_day=form.date_to_day.data, date_to_month=form.date_from_month.data,
+                           date_to_year=form.date_from_year.data,
+                           adults=form.adults.data, children=form.children.data, room_count=form.room_count.data)
+        agent = Agents(code=form.agent.data)
+        room_type = RoomType(type=form.room_type.data)
+        # hotel search
+        full_room =[]
+        date_from = form.date_from_year,'-',form.date_from_month,form.date_from_day
+        date_to = date(form.date_to_year, form.date_to_month, form.date_to_day)
+        for n in range(int(date_to-date_from).days):
+
+        for hotel in Hotel.query.all():
+            if form.name.data == hotel.name:
+                # date validation
+                if form.date_to_year >= form.date_from_year and form.date_to_month >= form.date_from_month and form.date_to_day >= form.date_from_day:
+                    #room vacancy
+                    for room in Bookings.query.all():
+                        if room.rooms_booked == True:
+                            full_room.append(room.id)
+                            for full in full_room:
+                                if full.date_from_year == form.date_from_year.data and full.date_from_month == form.date_from_month and full.date_from_day == form.date_from_day:
+                                    c += 1
+                                    if c >= form.room_count.data:
+                        else:
+                            db.session.add(booking, agent, room_type)
+                            #room date vacancy
+
+            db.session.add(booking, agent, room_type)
+            db.session.commit()
+            return redirect(url_for('confirmation'))
+        else:
+            flash('There\'s not enough vacancy', 'danger')
     return render_template('booking.html', title='Booking', form=form)
 
 
@@ -61,10 +87,11 @@ def confirmation():
         form = PaymentType(payment_type=form.payment_type.data,
                            card_num=bcrypt.generate_password_hash(form.card_number.data),
                            card_cvv=bcrypt.generate_password_hash(form.sec_num.data))
+        print(booking_data)
         if form is True:
             return redirect(url_for('persona'))
         else:
-               flash('Rooms not available, please choose a different hotel or different dates', 'danger')
+            flash('Rooms not available, please choose a different hotel or different dates', 'danger')
     return render_template('confirmation.html', title='Confirmation', form=form)
 
 
