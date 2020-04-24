@@ -4,8 +4,8 @@ from datetime import date
 from INIT.models import Rates, Agents
 
 
-def days_in_months():
-    global booking_days, total
+def days_in_months(start_day,start_month,start_year,end_day,end_month,end_year):
+    global booking_days
     global day_count
     global month_range
     global month_rate
@@ -15,13 +15,13 @@ def days_in_months():
     def years_covered_count(start_date: date, end_date: date):
         return ((end_date.year - start_date.year) + 1)
 
-    start = date(form.from_year.data, form.from_month, form.from_day)
-    end = date(form.to_year.data, form.to_month.data, form.yo_day.data)
+    start = date(start_year,start_month,start_day)
+    end = date(end_year,end_month,end_day)
 
-    print('start date: {}'.format(start))
-    print('end date: {}'.format(end))
-    print('months covered: {}'.format(months_covered_count(start, end)))
-    print('years covered: {}'.format(years_covered_count(start, end)))
+    # print('start date: {}'.format(start))
+    # print('end date: {}'.format(end))
+    # print('months covered: {}'.format(months_covered_count(start, end)))
+    # print('years covered: {}'.format(years_covered_count(start, end)))
 
     months_days = {1: 31,
                    2: 28,
@@ -66,13 +66,16 @@ def days_in_months():
                 day_count = months_days[j]
 
             booking_days.append(day_count)
+    return (booking_days,month_range)
 
+def rate_calc(agent):
+    global total
     for r in Rates.query.all():
         for m in month_range:
             if r.month == m:
                 rate =r.rate*booking_days[m]
                 for a in Agents.query.all():
-                    if form.agents.data == a.code:
+                    if agent == a.code:
                         if a.code == 'AMIGUIS':
                             rate=rate*(1-.25)
                             month_rate.append(rate)
@@ -85,7 +88,7 @@ def days_in_months():
 
     for val in month_rate:
         total=val[month_rate]+total
-    return (booking_days,month_range,month_rate)
+
     # print(booking_days)
     # print(total_per_month)
     # print(len(total_per_month))

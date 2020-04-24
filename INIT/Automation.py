@@ -2,7 +2,6 @@ import asyncio
 import random
 from faker import Faker
 from pyppeteer import launch
-from INIT.forms import Automate
 
 
 asyncio.set_event_loop(asyncio.new_event_loop())
@@ -106,13 +105,13 @@ async def insert_booking():
     await page.waitFor(3000)
 
 
-async def login():
+async def login(email,password,num_of_users):
     await page.goto('http://127.0.0.1:5000/', timeout=100000)
     await page.click('#login')
     await page.waitFor('#email')
-    await page.type('#email', Automate.email.data)
-    await page.type('#password', Automate.password.data)
-    await page.type('#number_of_users', Automate.number_of_users.data)
+    await page.type('#email', email)
+    await page.type('#password', password)
+    await page.type('#number_of_users', num_of_users)
     await page.click('#create')
 
 
@@ -121,7 +120,8 @@ async def logout():
     await page.waitFor(3000)
 
 
-async def main():
+
+async def var_receiver(email,password,num_of_users):
     disable_timeout_pyppeteer()
     browser = await launch(
         handleSIGINT=False,
@@ -131,10 +131,11 @@ async def main():
     context = await browser.createIncogniteBrowserContext()
     global page
     page = await context.newPage()
-    # await login()
+    await login()
     await insert_user()
     await insert_booking()
     await logout()
 
 
-asyncio.get_event_loop().run_until_complete(main())
+def run_main():
+    asyncio.get_event_loop().run_until_complete(var_receiver())
