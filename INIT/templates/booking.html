@@ -8,7 +8,7 @@
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
                 <!--- name form --->
-                <div class="form-group" id="name">
+                <div class="form-group" id="hotel_name">
 
                     {{ form.name.label(class="form-control-label" ) }}
                     {% if form.name.errors %}
@@ -24,7 +24,7 @@
                 </div>
                 <h3>Date from:</h3>
                 <!--- date_from_day form --->
-                <div class="form-group" id="name">
+                <div class="form-group" id="from_day">
                     {{ form.date_from_day.label(class="form-control-label" ) }}
                     {% if form.date_from_day.errors %}
                         {{ form.date_from_day(class="form-control form-control-lg is-invalid") }}
@@ -38,7 +38,7 @@
                     {% endif %}
                 </div>
                 <!--- date_from_month form --->
-                <div class="form-group" id="name">
+                <div class="form-group" id="from_month">
                     {{ form.date_from_month.label(class="form-control-label" ) }}
                     {% if form.date_from_month.errors %}
                         {{ form.date_from_month(class="form-control form-control-lg is-invalid") }}
@@ -52,7 +52,7 @@
                     {% endif %}
                 </div>
                 <!--- date_from_year form --->
-                <div class="form-group" id="name">
+                <div class="form-group" id="from_year">
                     {{ form.date_from_year.label(class="form-control-label" ) }}
                     {% if form.date_from_year.errors %}
                         {{ form.date_from_year(class="form-control form-control-lg is-invalid") }}
@@ -68,7 +68,7 @@
 
                 <!--- date_to_day form --->
                 <h3>Date to:</h3>
-                <div class="form-group" id="name">
+                <div class="form-group" id="to_day">
                     {{ form.date_to_day.label(class="form-control-label" ) }}
                     {% if form.date_to_day.errors %}
                         {{ form.date_to_day(class="form-control form-control-lg is-invalid") }}
@@ -82,7 +82,7 @@
                     {% endif %}
                 </div>
                 <!--- date_to_month form --->
-                <div class="form-group" id="name">
+                <div class="form-group" id="to_month">
                     {{ form.date_to_month.label(class="form-control-label" ) }}
                     {% if form.date_to_month.errors %}
                         {{ form.date_to_month(class="form-control form-control-lg is-invalid") }}
@@ -96,7 +96,7 @@
                     {% endif %}
                 </div>
                 <!--- date_to_year form --->
-                <div class="form-group" id="name">
+                <div class="form-group" id="to_year">
                     {{ form.date_to_year.label(class="form-control-label" ) }}
                     {% if form.date_to_year.errors %}
                         {{ form.date_to_year(class="form-control form-control-lg is-invalid") }}
@@ -111,7 +111,7 @@
                 </div>
 
                 <!--- adults form --->
-                <div class="form-group" id="name">
+                <div class="form-group" id="adults">
                     {{ form.adults.label(class="form-control-label" ) }}
                     {% if form.adults.errors %}
                         {{ form.adults(class="form-control form-control-lg is-invalid") }}
@@ -125,7 +125,7 @@
                     {% endif %}
                 </div>
                 <!--- children form --->
-                <div class="form-group" id="name">
+                <div class="form-group" id="children">
                     {{ form.children.label(class="form-control-label" ) }}
                     {% if form.children.errors %}
                         {{ form.children(class="form-control form-control-lg is-invalid") }}
@@ -139,7 +139,7 @@
                     {% endif %}
                 </div>
                 <!--- room_count form --->
-                <div class="form-group" id="name">
+                <div class="form-group" id="room_count">
                     {{ form.room_count.label(class="form-control-label" ) }}
                     {% if form.room_count.errors %}
                         {{ form.room_count(class="form-control form-control-lg is-invalid") }}
@@ -153,7 +153,7 @@
                     {% endif %}
                 </div>
                 <!--- agent form --->
-                <div class="form-group" id="name">
+                <div class="form-group" id="agents">
                     {{ form.agent.label(class="form-control-label" ) }}
                     {% if form.agent.errors %}
                         {{ form.agent(class="form-control form-control-lg is-invalid") }}
@@ -167,7 +167,7 @@
                     {% endif %}
                 </div>
                 <!--- room_type form --->
-                <div class="form-group" id="name">
+                <div class="form-group" id="type">
                     {{ form.room_type.label(class="form-control-label" ) }}
                     {% if form.room_type.errors %}
                         {{ form.room_type(class="form-control form-control-lg is-invalid") }}

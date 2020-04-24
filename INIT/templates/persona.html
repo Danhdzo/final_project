@@ -6,8 +6,8 @@
     <div class="form-container">
         <form method="POST" method="get" action="">.
             {{ form.hidden_tag() }}
-            <fieldset class="form-group" id="name">
-                <div class="form-group" id="name">
+            <fieldset class="form-group" >
+                <div class="form-group" >
                     {{ form.name.label(class="form-control-label" ) }}
                     {% if form.name.errors %}
                         {{ form.name(class="form-control form-control-lg is-invalid") }}
@@ -22,7 +22,7 @@
                 </div>
                 <!--- last_name Form  -->
 
-                <div class="form-group" id="last_name_form">
+                <div class="form-group" id="last_name">
                     {{ form.last_name.label(class="form-control-label") }}
                     {% if form.last_name.errors %}
                         {{ form.last_name(class="form-control form-control-lg is-invalid") }}
@@ -37,7 +37,7 @@
                 </div>
                 <!--- age Form  -->
 
-                <div class="form-group" id="age_form">
+                <div class="form-group" id="age">
                     {{ form.age.label(class="form-control-label") }}
                     {% if form.age.errors %}
                         {{ form.age(class="form-control form-control-lg is-invalid") }}
@@ -52,7 +52,7 @@
                 </div>
                 <!--- address Form  -->
 
-                <div class="form-group" id="age_form">
+                <div class="form-group" id="address">
                     {{ form.address.label(class="form-control-label") }}
                     {% if form.address.errors %}
                         {{ form.address(class="form-control form-control-lg is-invalid") }}
@@ -67,7 +67,7 @@
                 </div>
                 <!--- city Form  -->
 
-                <div class="form-group" id="age_form">
+                <div class="form-group" id="city">
                     {{ form.city.label(class="form-control-label") }}
                     {% if form.city.errors %}
                         {{ form.city(class="form-control form-control-lg is-invalid") }}
@@ -81,7 +81,7 @@
                     {% endif %}
                 </div>
                 <!-- state Form -->
-                <div class="form-group" id="age_form">
+                <div class="form-group" id="state">
                     {{ form.state.label(class="form-control-label") }}
                     {% if form.state.errors %}
                         {{ form.state(class="form-control form-control-lg is-invalid") }}
@@ -95,7 +95,7 @@
                     {% endif %}
                 </div>
                 <!--- zip Form  -->
-                <div class="form-group">
+                <div class="form-group" id="zip">
                     {{ form.zip.label(class="form-control-label") }}
                     {% if form.zip.errors %}
                         {{ form.zip(class="form-control form-control-lg is-invalid") }}
@@ -109,7 +109,7 @@
                     {% endif %}
                 </div>
                 <!--  country Form -->
-                <div class="form-group">
+                <div class="form-group" id="country">
                     {{ form.country.label(class="form-control-label") }}
                     {% if form.country.errors %}
                         {{ form.country(class="form-control form control-lg is-invalid") }}
@@ -123,7 +123,7 @@
                     {% endif %}
                 </div>
                 <!--  phone Form -->
-                <div class="form-group">
+                <div class="form-group" id="phone">
                     {{ form.phone.label(class="form-control-label") }}
                     {% if form.phone.errors %}
                         {{ form.phone(class="form-control form-control-lg is-invalid") }}
@@ -138,7 +138,7 @@
                 </div>
                 <!-- email -->
 
-                <div class="form-group">
+                <div class="form-group" id="email">
                     {{ form.email.label(class="form-control-label") }}
                     {% if form.email.errors %}
                         {{ form.email(class="form-control form-control-lg is-invalid") }}

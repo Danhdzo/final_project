@@ -1,11 +1,8 @@
-import calendar
-from datetime import date
-
 from flask import flash, render_template, redirect, url_for, request
 from flask_login import login_user, login_required, logout_user, current_user
-from INIT.forms import LoginForm, Persona_form, Booking_form, Payments_form
+from INIT.forms import LoginForm, Persona_form, Booking_form, Automate
 from INIT.__init__ import app, db, bcrypt
-from INIT.models import User, Persona, Hotel, Bookings, Rooms, RoomType, Agents, RoomsBooked, PaymentType
+from INIT.models import User, Persona, Hotel, Bookings, Rooms, RoomType, Agents, RoomsBooked, PaymentType, BookingStatus
 
 global booking_data
 
@@ -14,6 +11,23 @@ global booking_data
 @app.route("/home")
 def home():
     return render_template('home.html')
+
+
+@app.route("/automate", methods=['GET', 'POST'])
+def automate():
+    form = Automate()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.email.data).first()
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user)
+            for user in form.number_of_users.data:
+                import INIT.Automation
+
+            return redirect(url_for('automate'))
+        else:
+            flash('Login Unsuccessful. Please check email and password', 'danger')
+
+    return render_template('automation.html', title='Automating Tool', form=form)
 
 
 @app.route("/persona", methods=['GET', 'POST'])
@@ -43,56 +57,49 @@ def booking():
     form = Booking_form()
     c = 0
     if form.validate_on_submit():
+        full_room = []
+        for h in Hotel.query.all():
+            if form.name.data == h.name:
+                Bookings(hotel_id=h.id)
+            else:
+                flash('No hotel with that name', 'danger')
+        for a in Agents.query.all():
+            if form.agent.data == a.code:
+                Bookings(agent_id=a.id)
+        p = Persona.query.order_by(Persona.id.desc()).first()
+        Bookings(persona_id=p.id)
+
         booking = Bookings(date_from_day=form.date_from_day.data,
                            date_from_month=form.date_from_month.data, date_from_year=form.date_from_year.data,
-                           date_to_day=form.date_to_day.data, date_to_month=form.date_from_month.data,
-                           date_to_year=form.date_from_year.data,
+                           date_to_day=form.date_to_day.data, date_to_month=form.date_to_month.data,
+                           date_to_year=form.date_to_year.data,
                            adults=form.adults.data, children=form.children.data, room_count=form.room_count.data)
-        agent = Agents(code=form.agent.data)
-        room_type = RoomType(type=form.room_type.data)
-        # hotel search
-        full_room =[]
-        date_from = form.date_from_year,'-',form.date_from_month,form.date_from_day
-        date_to = date(form.date_to_year, form.date_to_month, form.date_to_day)
-        for n in range(int(date_to-date_from).days):
 
-        for hotel in Hotel.query.all():
-            if form.name.data == hotel.name:
-                # date validation
-                if form.date_to_year >= form.date_from_year and form.date_to_month >= form.date_from_month and form.date_to_day >= form.date_from_day:
-                    #room vacancy
-                    for room in Bookings.query.all():
-                        if room.rooms_booked == True:
-                            full_room.append(room.id)
-                            for full in full_room:
-                                if full.date_from_year == form.date_from_year.data and full.date_from_month == form.date_from_month and full.date_from_day == form.date_from_day:
-                                    c += 1
-                                    if c >= form.room_count.data:
-                        else:
-                            db.session.add(booking, agent, room_type)
-                            #room date vacancy
+        # date validation
+        if int(form.date_to_year.data) >= int(form.date_from_year.data) and int(form.date_to_month.data) >= int(
+                form.date_from_month.data):
+            # room vacancy per date
+            for room in Bookings.query.all():
+                if room.rooms_booked == True:
+                    full_room.append(room.id)
+                    for full in full_room:
+                        if full.room_avail >= form.room_count.data:
 
-            db.session.add(booking, agent, room_type)
-            db.session.commit()
-            return redirect(url_for('confirmation'))
+                            db.session.add(booking)
+                            db.session.commit()
         else:
-            flash('There\'s not enough vacancy', 'danger')
+            flash('Date not valid, please try again', 'danger')
+    #             flash('There\'s not enough vacancy', 'danger')
+    # else:
+    #     db.session.add(booking)
+    #     db.session.add(agent)
+    #     db.session.add(room_type)
+    #     db.session.commit()
+    flash('Added correctly', 'danger')
+    return redirect(url_for('persona'))
+
+
     return render_template('booking.html', title='Booking', form=form)
-
-
-@app.route("/confirmation", methods=['GET', 'POST'])
-def confirmation():
-    form = Payments_form()
-    if form.validate_on_submit():
-        form = PaymentType(payment_type=form.payment_type.data,
-                           card_num=bcrypt.generate_password_hash(form.card_number.data),
-                           card_cvv=bcrypt.generate_password_hash(form.sec_num.data))
-        print(booking_data)
-        if form is True:
-            return redirect(url_for('persona'))
-        else:
-            flash('Rooms not available, please choose a different hotel or different dates', 'danger')
-    return render_template('confirmation.html', title='Confirmation', form=form)
 
 
 @app.route("/about")

@@ -1,12 +1,13 @@
-from flask import request
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, DateField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Email
-from datetime import date
-import calendar
-from INIT import app
-from INIT.models import Hotel, RoomType, Bookings, PaymentType, Rates
 
+
+class Automate(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    number_of_users = StringField('Users to be created', validators=[DataRequired()])
+    create= SubmitField('Create Users')
 
 class LoginForm(FlaskForm):
     email = StringField('Email',
@@ -68,21 +69,3 @@ class Booking_form(FlaskForm):
                              validators=[DataRequired()])
     # submit
     submit = SubmitField('Reserve')
-
-
-class Payments_form(FlaskForm):
-
-
-    # sum of rates
-    total_rate = 0
-    for rate in rates_times_days:
-        total_rate = total_rate + rates_times_days[r]
-
-    # payments
-    pay_type_list = []
-    for p in range(0, 2):
-        pay_type_list.append((p, p))
-    payment_type = SelectField('Payment Type', validators=[DataRequired], choices=pay_type_list)
-    card_number = StringField('Card Number', validators=[DataRequired])
-    sec_num = PasswordField('CVV', validators=[DataRequired])
-    submit = SubmitField('Submit')
