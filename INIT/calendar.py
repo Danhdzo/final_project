@@ -1,27 +1,26 @@
 # date stuff
-from datetime import date
+from datetime import date, timedelta
 
-from INIT.models import Rates, Agents
+booking_days = []
 
 
-def days_in_months(start_day,start_month,start_year,end_day,end_month,end_year):
-    global booking_days
-    global day_count
-    global month_range
-    global month_rate
-    def months_covered_count(start_date: date, end_date: date):
-        return (end_date.year - start_date.year) * 12 + end_date.month - start_date.month + 1
+def months_covered_count(start_date: date, end_date: date):
+    return (end_date.year - start_date.year) * 12 + end_date.month - start_date.month + 1
 
-    def years_covered_count(start_date: date, end_date: date):
-        return ((end_date.year - start_date.year) + 1)
 
-    start = date(start_year,start_month,start_day)
-    end = date(end_year,end_month,end_day)
+def years_covered_count(start_date: date, end_date: date):
+    return ((end_date.year - start_date.year) + 1)
 
-    # print('start date: {}'.format(start))
-    # print('end date: {}'.format(end))
-    # print('months covered: {}'.format(months_covered_count(start, end)))
-    # print('years covered: {}'.format(years_covered_count(start, end)))
+
+def years_covered(start_day, start_month, start_year, end_day, end_month, end_year):
+    months = []
+    start = date(int(start_year), int(start_month), int(start_day))
+    end = date(int(end_year), int(end_month), int(end_day))
+
+    print('start date: {}'.format(start))
+    print('end date: {}'.format(end))
+    print('months covered: {}'.format(months_covered_count(start, end)))
+    print('years covered: {}'.format(years_covered_count(start, end)))
 
     months_days = {1: 31,
                    2: 28,
@@ -43,7 +42,7 @@ def days_in_months(start_day,start_month,start_year,end_day,end_month,end_year):
     total_per_month = []
 
     for i in range(0, year_count):
-        booking_days = []
+
         year = start.year + i
         print(year)
         if year_count == 1:
@@ -64,32 +63,22 @@ def days_in_months(start_day,start_month,start_year,end_day,end_month,end_year):
                 day_count = end.day
             else:
                 day_count = months_days[j]
-
+            months.append(j)
             booking_days.append(day_count)
-    return (booking_days,month_range)
+            if j <= 3 or j >= 11:
+                rate = 800
+            elif j == 4 or j >= 9:
+                rate = 1000
+            else:
+                rate = 1200
+            total_per_month.append(rate)
 
-def rate_calc(agent):
-    global total
-    for r in Rates.query.all():
-        for m in month_range:
-            if r.month == m:
-                rate =r.rate*booking_days[m]
-                for a in Agents.query.all():
-                    if agent == a.code:
-                        if a.code == 'AMIGUIS':
-                            rate=rate*(1-.25)
-                            month_rate.append(rate)
-                        elif a.code == 'UTE':
-                            rate=rate*(1-.3)
-                            month_rate.append(rate)
-                        elif a.code == 'MILITAR':
-                            rate=rate*(1-.1)
-                            month_rate.append(rate)
+    return (months, booking_days, total_per_month)
 
-    for val in month_rate:
-        total=val[month_rate]+total
 
-    # print(booking_days)
-    # print(total_per_month)
-    # print(len(total_per_month))
-# print('Total: {}'.format(sum(total_per_month)))
+start_day = 1
+start_month = 1
+start_year = 2020
+end_day = 1
+end_month = 1
+end_year = 2021

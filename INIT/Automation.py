@@ -123,19 +123,15 @@ async def logout():
 
 async def var_receiver(email,password,num_of_users):
     disable_timeout_pyppeteer()
-    browser = await launch(
-        handleSIGINT=False,
-        handleSIGTERM=False,
-        handleSIGHUP=False
-    )
+    browser = await launch(headless=False)
     context = await browser.createIncogniteBrowserContext()
     global page
     page = await context.newPage()
-    await login()
+    await login(email=email,password=password,num_of_users=num_of_users)
     await insert_user()
     await insert_booking()
     await logout()
 
 
-def run_main():
-    asyncio.get_event_loop().run_until_complete(var_receiver())
+def run_main(email,password,num_of_users):
+    asyncio.get_event_loop().run_until_complete(var_receiver(email,password,num_of_users))

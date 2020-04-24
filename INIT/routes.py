@@ -1,5 +1,7 @@
 from flask import flash, render_template, redirect, url_for, request
 from flask_login import login_user, login_required, logout_user, current_user
+
+from INIT.calendar import years_covered
 from INIT.forms import LoginForm, Persona_form, Booking_form, Automate
 from INIT.__init__ import app, db, bcrypt
 from INIT.models import User, Persona, Hotel, Bookings, Rooms, RoomType, Agents, RoomsBooked, PaymentType, BookingStatus
@@ -25,7 +27,7 @@ def automate():
             password = form.password.data
             num_of_users = form.number_of_users.data
             for user in form.number_of_users.data:
-                 Automation.var_receiver(email=email, password=password, num_of_users=num_of_users)
+                Automation.run_main(email=email, password=password, num_of_users=num_of_users)
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
 
@@ -58,8 +60,7 @@ def persona():
 def booking():
     form = Booking_form()
     if form.validate_on_submit():
-
-        full_room = []
+        # booking
         booking = Bookings(date_from_day=form.date_from_day.data,
                            date_from_month=form.date_from_month.data, date_from_year=form.date_from_year.data,
                            date_to_day=form.date_to_day.data, date_to_month=form.date_to_month.data,
@@ -68,41 +69,39 @@ def booking():
         for h in Hotel.query.all():
             if form.name.data == h.name:
                 booking.hotel_id = h.id
-            else:
-                flash('No hotel with that name', 'danger')
+
         for a in Agents.query.all():
             if form.agent.data == a.code:
                 booking.agent_id = a.id
+
         p = Persona.query.order_by(Persona.id.desc()).first()
         booking.persona_id = p.id
+        # booking id
+        b = Bookings.query.order_by(Bookings.id.desc()).first()
+        # hotel
+        for h in Hotel.query.all():
+            if h.bookings == b.id:
+                h.rooms_avail = h.rooms_avail - form.room_count
 
-        start_day = form.date_from_day.data
-        start_month = form.date_from_month.data
-        start_year = form.date_from_year.data
-        end_day = form.date_to_day.data
-        end_month = form.date_to_month.data
-        end_year = form.date_to_year.data
+        db.session.add(booking)
+        print('added')
+        db.session.commit()
 
-        x, y = calendar.days_in_months(start_day=start_day, start_month=start_month, start_year=start_year,
-                                       end_day=end_day,
-                                       end_month=end_month, end_year=end_year)
+        # start_day = form.date_from_day.data
+        # start_month = form.date_from_month.data
+        # start_year = form.date_from_year.data
+        # end_day = form.date_to_day.data
+        # end_month = form.date_to_month.data
+        # end_year = form.date_to_year.data
+        #
+        # # x=month num., y= days in x, z= uni. price
+        # x, y, z = years_covered(start_day=start_day, start_month=start_month, start_year=start_year, end_day=end_day,
+        #                         end_month=
+        #                         end_month, end_year=end_year)
 
-        # room vacancy per date
-        for room in Bookings.query.all():
-            if room.rooms_booked == True:
-                full_room.append(room.id)
-                for full in full_room:
-                    # date validation
-                    for month in y:
-                        for day in x:
-                            if full.date_from_month == month and full.date_from_day == day:
-                                if full.room_count >= form.room_count:
-                                    db.session.add(booking)
-                                    db.session.commit()
-                                    flash('Added correctly')
-                            else:
-                                flash('Date not valid, please try again', 'danger')
+        flash('Booking completed','alert')
         return redirect(url_for('persona'))
+
 
     return render_template('booking.html', title='Booking', form=form)
 
